@@ -1,15 +1,15 @@
 import AboutUs from '@/components/ui/about-us'
 import FeaturedProduct from '../../components/ui/featured-product'
+import PricingTable from '@/components/ui/PricingTable'
+import Testimonial from '@/components/ui/Testimonial'
 
 const HomePage = () => {
   return (
     <>
-      <section>
-        <AboutUs />
-      </section>
-      <section>
-        <FeaturedProduct />
-      </section>
+      <AboutUs />
+      <FeaturedProduct />
+      <PricingTable />
+      <Testimonial/>
     </>
   )
 }

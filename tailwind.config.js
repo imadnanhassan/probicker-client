@@ -22,6 +22,7 @@ module.exports = {
       },
       colors: {
         primary: '#0bba48',
+        yellowColor: '#FEB60D',
       },
       fontFamily: {
         title: ['Orbitron', 'serif'],
