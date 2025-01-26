@@ -120,18 +120,20 @@ const MainHeader = () => {
                   </svg>
                 </li>
                 <li className=" lg:mt-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <rect width="24" height="24" fill="none" />
-                    <path
-                      fill="#05cc20"
-                      d="M7 7a5 5 0 1 1 10 0A5 5 0 0 1 7 7M3.5 19a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5v2h-17z"
-                    />
-                  </svg>
+                  <Link to="/sign-in">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <rect width="24" height="24" fill="none" />
+                      <path
+                        fill="#05cc20"
+                        d="M7 7a5 5 0 1 1 10 0A5 5 0 0 1 7 7M3.5 19a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5v2h-17z"
+                      />
+                    </svg>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -152,18 +154,12 @@ const MainHeader = () => {
             <div className="lg:hidden block">
               <ul className="flex flex-col-reverse space-x-0 lg:space-x-6 lg:flex-row">
                 <li className="mt-4 lg:mt-0">
-                  <a
-                    href="javascript:void(0)"
-                    className="py-3 px-4 text-center border text-gray-600 hover:text-green-600 rounded-md block lg:inline lg:border-0"
-                  >
+                  <a className="py-3 px-4 text-center border text-gray-600 hover:text-green-600 rounded-md block lg:inline lg:border-0">
                     Login
                   </a>
                 </li>
                 <li className="mt-8 lg:mt-0">
-                  <a
-                    href="javascript:void(0)"
-                    className="py-3 px-4 text-center text-white bg-green-600 hover:bg-green-700 rounded-md shadow block lg:inline"
-                  >
+                  <a className="py-3 px-4 text-center text-white bg-green-600 hover:bg-green-700 rounded-md shadow block lg:inline">
                     Sign Up
                   </a>
                 </li>
@@ -173,8 +169,8 @@ const MainHeader = () => {
         </div>
       </nav>
 
-      <div className="items-center justify-center px-4 lg:w-[900px]  w-full mx-auto  lg:flex lg:flex-col ">
-        <div className="mt-14 lg:mt-16">
+      <div className="items-center justify-center px-4 lg:w-[800px] h-full w-full mx-auto  lg:flex lg:flex-col ">
+        <div className=" mt-16 lg:mt-0">
           <h2 className="lg:text-[60px] text-[28px] text-white font-title text-center">
             Discover your world by bicycle
           </h2>
