@@ -1,7 +1,43 @@
-import images from "@/assets/images/images"
-import { Link } from "react-router-dom"
+import images from '@/assets/images/images'
+import { useAppDispatch } from '@/redux/hooks'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useLoginMutation } from '@/redux/features/auth/authApi'
+import { setUser } from '@/redux/features/auth/authSlice'
+import { verifyToken } from '@/utils/verifyToken'
+import { toast } from 'sonner'
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      email: 'adnanhassan@gmail.com',
+      password: 'admin123456',
+    },
+  })
+  const [login, { isLoading }] = useLoginMutation()
+
+  const onSubmit = async data => {
+    console.log('data', data)
+    const toastId = toast.loading('Logging in')
+    try {
+      const userInfo = {
+        email: data.email,
+        password: data.password,
+      }
+
+      const res = await login(userInfo).unwrap()
+      const user = verifyToken(res.data.accessToken)
+      dispatch(setUser({ user: user, token: res.data.accessToken }))
+      toast.success('Logged in', { id: toastId, duration: 2000 })
+      navigate('/admin')
+      console.log('Login successful:', user)
+    } catch (err) {
+      console.error('Login failed:', err)
+    }
+  }
+
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600 space-y-5">
@@ -13,12 +49,12 @@ const LoginPage = () => {
             </h3>
           </div>
         </div>
-        <form onSubmit={e => e.preventDefault()} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <label className="font-medium">Email</label>
             <input
               type="email"
-              required
+              {...register('email', { required: true })}
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
             />
           </div>
@@ -26,7 +62,7 @@ const LoginPage = () => {
             <label className="font-medium">Password</label>
             <input
               type="password"
-              required
+              {...register('password', { required: true })}
               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
             />
           </div>
@@ -43,18 +79,19 @@ const LoginPage = () => {
               ></label>
               <span>Remember me</span>
             </div>
-            <a
-              href="javascript:void(0)"
-              className="text-center text-green-600 hover:text-green-500"
-            >
+            <a className="text-center text-green-600 hover:text-green-500">
               Forgot password?
             </a>
           </div>
-          <button className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150">
-            Sign in
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
+          >
+            {isLoading ? 'Logging in...' : 'Sign in '}
           </button>
         </form>
-       
+
         <p className="text-center">
           Don't have an account?{' '}
           <Link
