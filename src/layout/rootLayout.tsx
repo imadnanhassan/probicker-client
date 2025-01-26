@@ -1,3 +1,4 @@
+import MainFooter from "@/components/common/MainFooter";
 import MainHeader from "@/components/common/MainHeader";
 import { Outlet } from "react-router-dom";
 
@@ -10,7 +11,7 @@ const RootLayout = () => {
       <main>
         <Outlet />
       </main>
-      <footer>Footer</footer>
+     <MainFooter/>
     </>
   );
 };
