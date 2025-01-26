@@ -9,6 +9,8 @@ import {
   GearIcon,
   ReaderIcon,
 } from '@radix-ui/react-icons'
+import { useAppDispatch } from '@/redux/hooks'
+import { logout } from '@/redux/features/auth/authSlice'
 
 export const AdminMenu = () => {
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false)
@@ -16,6 +18,13 @@ export const AdminMenu = () => {
   const [isUiPageDropdownOpen, setIsUiPageDropdownOpen] = useState(false)
   const [isPostDropdownOpen, setIsPostDropdownOpen] = useState(false)
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false)
+
+
+  const dispatch = useAppDispatch()
+
+  const handleLogout = () => {
+    dispatch(logout())
+  }
 
   return (
     <ul className="flex flex-col gap-2 ">
@@ -65,7 +74,10 @@ export const AdminMenu = () => {
         </div>
         {isProductsDropdownOpen && (
           <ul className="space-y-1 list-none ">
-            <AdminMenuLink to="/admin/product/list" label="Prodcut List" />
+            <AdminMenuLink
+              to="/admin/product-list"
+              label="Prodcut List"
+            />
             <AdminMenuLink to="/admin/product/create" label="Prodcut Create" />
             <AdminMenuLink
               to="/admin/product/categorys"
@@ -267,7 +279,8 @@ export const AdminMenu = () => {
       {/* Logout */}
       <li id="sidebar">
         <Link
-          to="/admin/signup"
+          to="/sign-in"
+          onClick={handleLogout}
           className="flex items-center gap-3 px-4 py-2 text-uxSecoundryBg2 dark:text-white group relative border-l-4 border-transparent transition-all duration-300 ease-in-out hover:border-[#0bba48] hover:rounded-t-lg hover:rounded-b-lg"
         >
           <ExitIcon className="transition-colors duration-300 group-hover:text-[#0bba48]" />

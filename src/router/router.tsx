@@ -1,5 +1,6 @@
 import AdminLayout from '@/layout/adminLayout'
 import RootLayout from '@/layout/rootLayout'
+import ProductList from '@/pages/admin/product/ProductList'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import HomePage from '@/pages/ui/HomePage'
@@ -16,9 +17,12 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       {
-       
         index: true,
         element: <>Overviesw</>,
+      },
+      {
+        path: '/admin/product-list',
+        element: <ProductList />,
       },
     ],
   },

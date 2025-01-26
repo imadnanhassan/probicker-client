@@ -13,11 +13,16 @@ import { Link } from 'react-router-dom'
 import images from '../../assets/images/images'
 import { AdminMenu } from '../admin/AdminMenu'
 import ProfileDropdown from '../admin/ProfileDropdown'
+import { useSelector } from 'react-redux'
 
 const AdminHeader = ({ handleToggle, isMobileMenuOpen }) => {
+
+  const admin = useSelector((state: any) => state?.auth?.user)
+  console.log(admin)
+
   //   const { isDarkMode, toggleDarkMode } = useDarkMode()
   return (
-    <header className=" sticky top-0 z-50 shadow-sm py-3 bg-uxBgMain text-lightText dark:bg-darkBg dark:text-darkText">
+    <header className=" sticky top-0 z-50 shadow-sm py-3 bg-white text-lightText dark:bg-darkBg dark:text-darkText">
       <div className="flex items-center justify-between px-10">
         <div className=" flex items-center gap-5">
           <button onClick={handleToggle} className="lg:block hidden">

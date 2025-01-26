@@ -18,7 +18,7 @@ const LoginPage = () => {
   })
   const [login, { isLoading }] = useLoginMutation()
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     console.log('data', data)
     const toastId = toast.loading('Logging in')
     try {
