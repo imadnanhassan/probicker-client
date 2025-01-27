@@ -1,13 +1,13 @@
 import AdminBreadcrumbs from '@/components/common/AdminBreadcrumbs'
 import { useGettAllProductQuery } from '@/redux/features/product/product.api'
+import { ProductData } from '@/types'
 import { Link } from 'react-router-dom'
 
 const ProductList = () => {
-  const { data, isError, isLoading } = useGettAllProductQuery()
+  const { data, isError, isLoading } = useGettAllProductQuery({})
 
-  console.log(data?.data)
-
-
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
   return (
     <>
       <AdminBreadcrumbs
@@ -23,7 +23,7 @@ const ProductList = () => {
               to={'/'}
               className="inline-block px-4 py-2 text-white duration-150 font-medium bg-green-600 rounded-lg hover:bg-green-500 active:bg-green-700 md:text-sm"
             >
-              Add member
+              Add product
             </Link>
           </div>
         </div>
@@ -35,15 +35,18 @@ const ProductList = () => {
                 <th className="py-3 px-6">Brand</th>
                 <th className="py-3 px-6">Price</th>
                 <th className="py-3 px-6">Quantity</th>
-                <th className="py-3 px-6">Type</th>
+                <th className="py-3 px-6">Model</th>
                 <th className="py-3 px-6">Action</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 divide-y">
-              {data?.data.map((item, idx) => (
+              {data?.data.map((item: ProductData, idx: number) => (
                 <tr key={idx}>
                   <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                    <img src={item.avatar} className="w-10 h-10 rounded-full" />
+                    <img
+                      src={item.imageUrl}
+                      className="w-10 h-10 rounded-full"
+                    />
                     <div>
                       <span className="block text-gray-700 text-sm font-medium">
                         {item.name}
@@ -55,9 +58,8 @@ const ProductList = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {item.quantity}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
-                  
-                  
+                  <td className="px-6 py-4 whitespace-nowrap">{item.model}</td>
+
                   <td className="text-left px-6 whitespace-nowrap">
                     <a className="py-2 px-3 font-medium text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg">
                       Edit

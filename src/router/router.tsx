@@ -1,5 +1,6 @@
 import AdminLayout from '@/layout/adminLayout'
 import RootLayout from '@/layout/rootLayout'
+import ProductCreate from '@/pages/admin/product/ProductCreate'
 import ProductList from '@/pages/admin/product/ProductList'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/product-list',
         element: <ProductList />,
+      },
+      {
+        path: '/admin/product-create',
+        element: <ProductCreate />,
       },
     ],
   },
