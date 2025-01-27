@@ -6,19 +6,30 @@ import { useLoginMutation } from '@/redux/features/auth/authApi'
 import { setUser } from '@/redux/features/auth/authSlice'
 import { verifyToken } from '@/utils/verifyToken'
 import { toast } from 'sonner'
+import { JwtPayload } from 'jwt-decode'
 
 const LoginPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      email: 'adnanhassan@gmail.com',
-      password: 'admin123456',
-    },
-  })
+  const { register, handleSubmit } = useForm<FormData>()
   const [login, { isLoading }] = useLoginMutation()
 
-  const onSubmit = async (data) => {
+  interface FormData {
+    email: string
+    password: string
+  }
+
+  interface User extends JwtPayload {
+    role?: string
+  }
+
+  interface LoginResponse {
+    data: {
+      accessToken: string
+    }
+  }
+
+  const onSubmit = async (data: FormData) => {
     console.log('data', data)
     const toastId = toast.loading('Logging in')
     try {
@@ -27,14 +38,19 @@ const LoginPage = () => {
         password: data.password,
       }
 
-      const res = await login(userInfo).unwrap()
-      const user = verifyToken(res.data.accessToken)
+      const res: LoginResponse = await login(userInfo).unwrap()
+      const user: User = verifyToken(res.data.accessToken)
       dispatch(setUser({ user: user, token: res.data.accessToken }))
       toast.success('Logged in', { id: toastId, duration: 2000 })
-      navigate('/admin')
-      console.log('Login successful:', user)
-    } catch (err) {
-      console.error('Login failed:', err)
+      if (user?.role === 'admin') {
+        navigate('/admin/dashboard')
+      } else if (user?.role === 'customer') {
+        navigate('/customer/dashboard')
+      } else {
+        navigate('/sign-in')
+      }
+    } catch {
+      toast.error('Invalid email or password', { id: toastId, duration: 2000 })
     }
   }
 
