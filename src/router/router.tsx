@@ -16,32 +16,6 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [{ path: '/', element: <HomePage /> }],
   },
-  // {
-  //   path: '/admin',
-  //   element: <AdminLayout />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <>Overviesw</>,
-  //     },
-  //     {
-  //       path: '/admin/product-list',
-  //       element: (
-  //         <PrivateRoute role="admin">
-  //           <ProductList />
-  //         </PrivateRoute>
-  //       ),
-  //     },
-  //     {
-  //       path: '/admin/product-create',
-  //       element: (
-  //         <PrivateRoute role="admin">
-  //           <ProductCreate />,
-  //         </PrivateRoute>
-  //       ),
-  //     },
-  //   ],
-  // },
 
   {
     path: '/admin/',
