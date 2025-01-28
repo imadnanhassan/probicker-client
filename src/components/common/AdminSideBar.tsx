@@ -10,7 +10,7 @@ const AdminSideBar = ({ isSidebarOpen }: AdminSideBarProps) => {
   return (
     <aside>
       <div
-        className={`bg-sideBarColor h-screen lg:block hidden bg-uxBgMain text-lightText shadow  ${
+        className={`bg-sideBarColor h-screen lg:block hidden bg-uxBgMain text-lightText shadow border rounded-3xl py-20 ${
           isSidebarOpen
             ? 'w-0 transition-width duration-500 ease-in-out sm:block'
             : 'w-60 transition-width duration-500 ease-in-out sm:block '

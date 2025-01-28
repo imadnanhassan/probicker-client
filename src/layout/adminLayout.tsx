@@ -19,7 +19,7 @@ const AdminLayout: React.FC = () => {
     <div className="flex max-h-screen overflow-hidden bg-lightBg text-lightText dark:bg-darkBg dark:text-darkText">
       <AdminSideBar isSidebarOpen={isSidebarOpen} />
 
-      <main className="min-h-[calc(100vh-140px)] w-full overflow-y-auto bg-lightBg text-lightText dark:bg-[#000] dark:text-darkText">
+      <main className=" w-full overflow-y-auto bg-lightBg text-lightText dark:bg-[#000] dark:text-darkText">
         {/* Header component */}
         <AdminHeader
           handleToggle={handleToggle}
