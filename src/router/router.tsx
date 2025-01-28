@@ -9,12 +9,16 @@ import PrivateRoute from './PrivateRoute'
 import { routeGenerator } from '@/utils/routesGenerator'
 import { adminPaths } from './admin.routes'
 import { customerPaths } from './customer.router'
+import ShopPage from '@/pages/ui/ShopPage'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    children: [{ path: '/', element: <HomePage /> }],
+    children: [
+      { path: '/', element: <HomePage /> },
+      { path: '/shop', element: <ShopPage /> },
+    ],
   },
 
   {
