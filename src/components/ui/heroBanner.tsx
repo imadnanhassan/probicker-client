@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import images from '@/assets/images/images'
 
 const HeroBanner = () => {

@@ -1,6 +1,10 @@
 // import { StarIcon as Star } from '@heroicons/react/solid'
 import UiBrreadcrumbs from '@/components/common/UiBrreadcrumbs'
+import { addToCart, selectCartItems } from '@/redux/features/cartSlice/cartSlice'
+
 import { useGettAllProductQuery } from '@/redux/features/product/product.api'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+
 import { ProductData } from '@/types'
 import { StarFilledIcon } from '@radix-ui/react-icons'
 import { Heart } from 'lucide-react'
@@ -30,10 +34,19 @@ export const Rating: React.FC<RatingProps> = ({ rating, maxStars = 5 }) => {
 }
 
 const ShopPage = () => {
-  const { data, isLoading } = useGettAllProductQuery(undefined)
+  const { data: product, isLoading } = useGettAllProductQuery(undefined)
+  console.log('Product Data:', product)
 
-  console.log(data?.data)
+  const dispatch = useAppDispatch()
+  const cart = useAppSelector(selectCartItems)
+
+  const handleAddToCart = (product: ProductData) => {
+    dispatch(addToCart({ ...product, id: Number(product._id), quantity: 1 })) 
+  }
+
+    console.log('Cart:', cart)
   if (isLoading) return <div>Loading...</div>
+
   const renderStars = (rating: number) => {
     return <Rating rating={rating} maxStars={5} />
   }
@@ -43,7 +56,7 @@ const ShopPage = () => {
       <UiBrreadcrumbs breadcrumbs={breadcrumbsData} />
       <div className="font-sans max-w-screen-xl mx-auto md:px-8 ">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 py-20">
-          {data?.data?.map((product: ProductData) => (
+          {product?.data?.map((product: ProductData) => (
             <div
               key={product._id}
               className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-md transition-all"
@@ -86,13 +99,14 @@ const ShopPage = () => {
 
                 {/* Wishlist and Add to Cart */}
                 <div className="flex items-center gap-2 mt-4">
-                  <div
+                  <button
                     className="bg-pink-100 hover:bg-pink-200 w-12 h-9 flex items-center justify-center rounded cursor-pointer"
                     title="Wishlist"
                   >
                     <Heart className="w-5 h-5 text-pink-500" />
-                  </div>
+                  </button>
                   <button
+                    onClick={() => handleAddToCart(product)}
                     type="button"
                     className="text-sm px-2 min-h-[36px] w-full bg-green-600 hover:bg-green-700 text-white tracking-wide ml-auto outline-none border-none rounded"
                   >

@@ -1,5 +1,5 @@
 export type ProductData = {
-  _id: string
+  _id?: string
   imageUrl: string
   name: string
   brand: string
