@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-irregular-whitespace */
 import images from '@/assets/images/images'
 import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-const MainHeader = () => {
-  const [state, setState] = useState(false)
-  const navRef = useRef<HTMLDivElement>(null)
 
-  const navigation = [
+const navigation = [
     { title: 'Home', path: '/' },
     { title: 'Our Services', path: '/service' },
     { title: 'Shop', path: '/shop' },
@@ -15,6 +14,14 @@ const MainHeader = () => {
     { title: 'Pricing', path: '/pricing' },
     { title: 'About Us', path: 'about-us' },
   ]
+const MainHeader = () => {
+  const [state, setState] = useState(false)
+  const navRef = useRef<HTMLDivElement>(null)
+
+   const user = useSelector((state: any) => state?.auth?.user)
+  console.log(user?.role)
+
+  
 
   useEffect(() => {
     const body = document.body
@@ -90,7 +97,7 @@ const MainHeader = () => {
             className={`flex-1 justify-between flex-row-reverse lg:overflow-visible lg:flex lg:pb-0 lg:pr-0 lg:h-auto ${state ? 'h-screen pb-20 overflow-auto pr-4' : 'hidden'}`}
           >
             <div className=" hidden lg:block">
-              <ul className="flex flex-col-reverse space-x-0 lg:space-x-6 lg:flex-row">
+              <ul className="flex flex-col-reverse items-center space-x-0 lg:space-x-6 lg:flex-row">
                 <li className=" lg:mt-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -119,21 +126,59 @@ const MainHeader = () => {
                     />
                   </svg>
                 </li>
-                <li className=" lg:mt-0">
-                  <Link to="/sign-in">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
+                <li className="lg:mt-0">
+                  {user ? (
+                    // If user is logged in
+                    <Link
+                      to={
+                        user.role === 'admin'
+                          ? '/admin/dashboard'
+                          : '/customer/dashboard'
+                      }
                     >
-                      <rect width="24" height="24" fill="none" />
-                      <path
-                        fill="#05cc20"
-                        d="M7 7a5 5 0 1 1 10 0A5 5 0 0 1 7 7M3.5 19a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5v2h-17z"
-                      />
-                    </svg>
-                  </Link>
+                      {user?.avatar ? (
+                        // Display user avatar if available
+                        <img
+                          src={user?.avatar}
+                          alt="User Avatar"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      ) : (
+                        // Default user icon
+                        <div className='flex items-center gap-1 border rounded-full p-1'>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                          >
+                            <rect width="24" height="24" fill="none" />
+                            <path
+                              fill="#05cc20"
+                              d="M7 7a5 5 0 1 1 10 0A5 5 0 0 1 7 7M3.5 19a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5v2h-17z"
+                            />
+                          </svg>
+                          <p>{user.role}</p>
+                        </div>
+                      )}
+                    </Link>
+                  ) : (
+                    // If user is not logged in
+                    <Link to="/sign-in">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <rect width="24" height="24" fill="none" />
+                        <path
+                          fill="#05cc20"
+                          d="M7 7a5 5 0 1 1 10 0A5 5 0 0 1 7 7M3.5 19a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5v2h-17z"
+                        />
+                      </svg>
+                    </Link>
+                  )}
                 </li>
               </ul>
             </div>

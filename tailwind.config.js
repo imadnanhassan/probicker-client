@@ -23,10 +23,20 @@ module.exports = {
       colors: {
         primary: '#0bba48',
         yellowColor: '#FEB60D',
+        uxBgMain: '#F9FAFB',
       },
       fontFamily: {
         title: ['Orbitron', 'serif'],
         regular: ['Inter', 'sans-serif'],
+      },
+
+      backgroundImage: {
+        'gradient-to-r': 'linear-gradient(to right, #559ED8, #1D61AD)',
+        uxGradientGraytoPurpole: 'linear-gradient(135deg, #292933, #9559F7)',
+        uxGradientGraytoPurpoleToRight:
+          'linear-gradient(to right, #292933 30%, #9559F7 70%)',
+        uxGradientGraytoPurpoleCircle:
+          'radial-gradient(circle, #292933, #9559F7)',
       },
     },
   },

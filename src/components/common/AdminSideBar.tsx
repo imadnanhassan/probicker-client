@@ -2,7 +2,11 @@ import images from '@/assets/images/images'
 import { Link } from 'react-router-dom'
 import { AdminMenu } from '../admin/AdminMenu'
 
-const AdminSideBar = ({ isSidebarOpen }) => {
+interface AdminSideBarProps {
+  isSidebarOpen: boolean;
+}
+
+const AdminSideBar = ({ isSidebarOpen }: AdminSideBarProps) => {
   return (
     <aside>
       <div

@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
   GlobeIcon,
   HamburgerMenuIcon,
-
   TextAlignJustifyIcon,
 } from '@radix-ui/react-icons'
-
 
 import { motion } from 'framer-motion'
 import { Cross2Icon } from '@radix-ui/react-icons'
@@ -15,8 +14,12 @@ import { AdminMenu } from '../admin/AdminMenu'
 import ProfileDropdown from '../admin/ProfileDropdown'
 import { useSelector } from 'react-redux'
 
-const AdminHeader = ({ handleToggle, isMobileMenuOpen }) => {
+interface AdminHeaderProps {
+  handleToggle: () => void;
+  isMobileMenuOpen: boolean;
+}
 
+const AdminHeader: React.FC<AdminHeaderProps> = ({ handleToggle, isMobileMenuOpen }) => {
   const admin = useSelector((state: any) => state?.auth?.user)
   console.log(admin)
 
@@ -26,13 +29,15 @@ const AdminHeader = ({ handleToggle, isMobileMenuOpen }) => {
       <div className="flex items-center justify-between px-10">
         <div className=" flex items-center gap-5">
           <button onClick={handleToggle} className="lg:block hidden">
-            <span className="dark:bg-uxSecoundryBg2 w-10 h-10 rounded-full flex items-center justify-center dark:gradient-border transition-all duration-300 ease-in-out dark:hover:bg-uxGradientGraytoPurpoleCircle text-uxLightTextIcon bg-uxLightBgIcon ">
+            <span className="dark:bg-uxSecoundryBg2 w-10 h-10 rounded-full flex items-center justify-center dark:gradient-border transition-all duration-300 ease-in-out hover:bg-uxGradientGraytoPurpoleCircle text-white bg-primary">
               <TextAlignJustifyIcon />
             </span>
           </button>
           <div className="hidden lg:block">
-            <span className=" dark:bg-uxSecoundryBg2 w-10 h-10 rounded-full flex items-center justify-center dark:gradient-border text-uxLightTextIcon bg-uxLightBgIcon ">
-              <GlobeIcon />
+            <span className=" dark:bg-primary w-10 h-10 rounded-full flex items-center justify-center  text-white bg-primary ">
+              <Link to={'/'}>
+                <GlobeIcon />
+              </Link>
             </span>
           </div>
           <button onClick={handleToggle} className="lg:hidden block">
@@ -76,7 +81,13 @@ const AdminHeader = ({ handleToggle, isMobileMenuOpen }) => {
 
               <div className="flex items-center justify-center gap-4 pt-3">
                 <Link to={'/admin'}>
-                  <img src={images.headerlogo} alt="Othoba Logo" className="" />
+                  <img
+                    src={images.headerlogo}
+                    alt=" Logo"
+                    className=" "
+                    width={110}
+                    height={50}
+                  />
                 </Link>
 
                 <button onClick={handleToggle} className="p-4 self-end">
