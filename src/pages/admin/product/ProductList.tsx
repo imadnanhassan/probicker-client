@@ -1,10 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AdminBreadcrumbs from '@/components/common/AdminBreadcrumbs'
-import { useGettAllProductQuery } from '@/redux/features/product/product.api'
+import {
+  useDeleteProductMutation,
+  useGettAllProductQuery,
+} from '@/redux/features/product/product.api'
 import { ProductData } from '@/types'
+import { EyeOpenIcon, Pencil2Icon, TrashIcon } from '@radix-ui/react-icons'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 const ProductList = () => {
-  const { data, isError, isLoading } = useGettAllProductQuery({})
+  const [deleteProductId, setDeleteProductId] = useState<string | null>(null)
+  const { data, isError, isLoading } = useGettAllProductQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  })
+  const [deleteProduct, { isLoading: deleteLoading }] =
+    useDeleteProductMutation(undefined)
+
+  const handleDelete = async (id: string) => {
+    setDeleteProductId(id)
+    const toastId = toast.loading('Deleting...')
+
+    try {
+      const response = await deleteProduct(id).unwrap()
+      const successMessage = response?.message || 'Product deleted successfully'
+      toast.success(successMessage)
+    } catch (error: any) {
+      const errorMessage = error?.data?.message || 'Failed to delete product'
+      toast.error(errorMessage)
+    } finally {
+      toast.dismiss(toastId)
+      setDeleteProductId(null)
+    }
+  }
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error</div>
@@ -61,11 +90,24 @@ const ProductList = () => {
                   <td className="px-6 py-4 whitespace-nowrap">{item.model}</td>
 
                   <td className="text-left px-6 whitespace-nowrap">
-                    <a className="py-2 px-3 font-medium text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg">
-                      Edit
-                    </a>
-                    <button className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
-                      Delete
+                    <button className="py-2 leading-none px-3 font-medium text-blue-600 duration-150 hover:bg-blue-500 hover:text-white rounded-full">
+                      <EyeOpenIcon />
+                    </button>
+                    <button className="py-2 leading-none px-3 font-medium text-yellow-600 duration-150 hover:bg-yellow-500 hover:text-white rounded-full">
+                      <Pencil2Icon />
+                    </button>
+                    <button
+                      onClick={() => item._id && handleDelete(item._id)}
+                      disabled={deleteLoading && deleteProductId === item._id}
+                      className="py-2 leading-none px-3 font-medium text-red-600 duration-150 hover:bg-red-500 hover:text-white rounded-full"
+                    >
+                      {deleteLoading && deleteProductId === item._id ? (
+                        <span className="animate-spin">
+                          <TrashIcon className="w-5 h-5" />
+                        </span>
+                      ) : (
+                        <TrashIcon className="w-5 h-5" />
+                      )}
                     </button>
                   </td>
                 </tr>

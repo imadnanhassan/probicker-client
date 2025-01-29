@@ -1,6 +1,9 @@
 // import { StarIcon as Star } from '@heroicons/react/solid'
 import UiBrreadcrumbs from '@/components/common/UiBrreadcrumbs'
-import { addToCart, selectCartItems } from '@/redux/features/cartSlice/cartSlice'
+import {
+  addToCart,
+  selectCartItems,
+} from '@/redux/features/cartSlice/cartSlice'
 
 import { useGettAllProductQuery } from '@/redux/features/product/product.api'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -15,7 +18,17 @@ interface RatingProps {
   rating: number
   maxStars?: number
 }
+interface Product {
+  _id: string
+  name: string
+  description: string
+  price: number
+  imageUrl: string
+}
 
+ interface CartProduct extends Product {
+   quantity: number
+ }
 export const Rating: React.FC<RatingProps> = ({ rating, maxStars = 5 }) => {
   const renderStars = () => {
     return Array.from({ length: maxStars }, (_, index) => {
@@ -40,11 +53,18 @@ const ShopPage = () => {
   const dispatch = useAppDispatch()
   const cart = useAppSelector(selectCartItems)
 
-  const handleAddToCart = (product: ProductData) => {
-    dispatch(addToCart({ ...product, id: Number(product._id), quantity: 1 })) 
+ 
+
+  const handleAddToCart = product => {
+    dispatch(
+      addToCart({
+        ...product,
+        quantity: 1, 
+      }),
+    )
   }
 
-    console.log('Cart:', cart)
+  console.log('Cart:', cart)
   if (isLoading) return <div>Loading...</div>
 
   const renderStars = (rating: number) => {

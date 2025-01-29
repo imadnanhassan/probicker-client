@@ -10,6 +10,7 @@ import { routeGenerator } from '@/utils/routesGenerator'
 import { adminPaths } from './admin.routes'
 import { customerPaths } from './customer.router'
 import ShopPage from '@/pages/ui/ShopPage'
+import ShippingCartPage from '@/pages/ui/ShippingCartPage'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       { path: '/shop', element: <ShopPage /> },
+      { path: '/cart', element: <ShippingCartPage /> },
     ],
   },
 
