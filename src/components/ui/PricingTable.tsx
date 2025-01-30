@@ -48,10 +48,8 @@ const plans = [
 const PricingTable = () => {
   return (
     <section className="py-14">
-      <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
+      <div className="max-w-screen-2xl mx-auto px-4 text-gray-600 md:px-8">
         <div className="relative max-w-xl mx-auto sm:text-center">
-         
-
           <div className="max-w-xl space-y-3 md:mx-auto">
             <span className="relative flex justify-center">
               <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-primary to-transparent opacity-75"></div>

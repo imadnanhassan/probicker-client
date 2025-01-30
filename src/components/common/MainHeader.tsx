@@ -39,7 +39,7 @@ const MainHeader = () => {
   const cartItems = useAppSelector(selectCartItems)
   return (
     <nav ref={navRef} className="w-full bg-white top-0 z-20 py-3 font-regular">
-      <div className="items-center px-4 max-w-screen-xl mx-auto md:px-8 lg:flex">
+      <div className="items-center px-4 max-w-screen-2xl mx-auto md:px-8 lg:flex">
         <div className="flex items-center justify-between py-3 lg:py-4 lg:block">
           <Link to={'/'}>
             <img
@@ -189,7 +189,7 @@ const MainHeader = () => {
             </ul>
           </div>
           <div className="flex-1">
-            <ul className="justify-center items-center space-y-8 lg:flex lg:space-x-6 lg:space-y-0">
+            <ul className="justify-center items-center mt-[7px] space-y-8 lg:flex lg:space-x-6 lg:space-y-0">
               {navigation.map((item, idx) => {
                 return (
                   <li key={idx} className="text-gray-600 hover:text-green-600">

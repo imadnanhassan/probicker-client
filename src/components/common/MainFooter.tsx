@@ -1,11 +1,10 @@
-import images from "@/assets/images/images"
-import { Link } from "react-router-dom"
-
+import images from '@/assets/images/images'
+import { Link } from 'react-router-dom'
 
 const MainFooter = () => {
   return (
     <footer className="bg-white">
-      <div className="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24">
+      <div className="mx-auto max-w-screen-2xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <Link to={'/'}>
@@ -173,7 +172,6 @@ const MainFooter = () => {
                     className="text-gray-700 transition hover:text-gray-700/75"
                     href="#"
                   >
-                   
                     Careers
                   </a>
                 </li>

@@ -8,9 +8,8 @@ import { HiStar } from 'react-icons/hi'
 
 const Testimonial = () => {
   return (
-    <div className="max-w-screen-xl mx-auto px-4">
+    <div className="max-w-screen-2xl mx-auto px-4">
       <div className=" ">
-      
         <div className=" py-10">
           <div className=" py-10">
             <div className="max-w-xl space-y-3 md:mx-auto">

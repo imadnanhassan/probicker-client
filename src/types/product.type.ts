@@ -1,13 +1,15 @@
 export type ProductData = {
   _id?: string
-
-  imageUrl: string
   name: string
+  model: string
   brand: string
   price: number
-  quantity: number
-  model: string | undefined
-  description?: string
+  quantity: string
+  inStock: boolean
+  description: string
+  imageUrl: string
+  createdAt: string
+  updatedAt: string
 }
 export type ProductFormData = {
   name: string

@@ -1,7 +1,7 @@
 const FeaturedProduct = () => {
   return (
     <div className="py-28 bg-[#F5F5F5]">
-      <div className="max-w-screen-xl mx-auto px-4 md:text-center md:px-8">
+      <div className="max-w-screen-2xl mx-auto px-4 md:text-center md:px-8">
         <div className="max-w-xl space-y-3 md:mx-auto">
           <span className="relative flex justify-center">
             <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-primary to-transparent opacity-75"></div>
@@ -10,7 +10,6 @@ const FeaturedProduct = () => {
             </span>
           </span>
 
-                  
           <p className="text-gray-800 text-3xl font-semibold sm:text-4xl font-title">
             Build the future with us
           </p>

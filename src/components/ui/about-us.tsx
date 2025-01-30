@@ -1,10 +1,9 @@
-
 import { Link } from 'react-router-dom'
 
 const AboutUs = () => {
   return (
     <div className="py-14">
-      <div className="max-w-screen-xl mx-auto md:px-8">
+      <div className="max-w-screen-2xl mx-auto md:px-8">
         <div className="items-center gap-x-12 sm:px-4 md:px-0 lg:flex">
           <div className="flex-1 sm:hidden lg:block">
             <img
