@@ -18,14 +18,42 @@ const productApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Product'],
     }),
+    getSingleProductById: builder.query({
+      query: id => ({
+        url: `/products/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['Product'],
+    }),
+
+
+
+
     updateProduct: builder.mutation({
-      query: (id, data) => ({
+      query: ({ id, data }) => ({
         url: `/products/${id}`,
         method: 'PUT',
         body: data,
       }),
       invalidatesTags: ['Product'],
+      transformResponse: (response, meta: { response?: { status?: number } }) => {
+        const status = meta?.response?.status 
+        if (status && status >= 200 && status < 300) {
+          return response
+        } else {
+          const errorData: { message: string; status?: number } = {
+            message: 'Failed to update product',
+            ...response,
+          };
+
+          if (status) {
+            errorData.status = status;
+          }
+          throw { status, data: errorData } 
+        }
+      },
     }),
+
     deleteProduct: builder.mutation({
       query: id => ({
         url: `/products/${id}`,
@@ -38,6 +66,7 @@ const productApi = baseApi.injectEndpoints({
 
 export const {
   useGettAllProductQuery,
+  useGetSingleProductByIdQuery,
   useAddProductMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,

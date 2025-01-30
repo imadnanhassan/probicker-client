@@ -94,7 +94,9 @@ const ProductList = () => {
                       <EyeOpenIcon />
                     </button>
                     <button className="py-2 leading-none px-3 font-medium text-yellow-600 duration-150 hover:bg-yellow-500 hover:text-white rounded-full">
-                      <Pencil2Icon />
+                      <Link to={`/admin/product-edit/${item._id}`}>
+                        <Pencil2Icon />
+                      </Link>
                     </button>
                     <button
                       onClick={() => item._id && handleDelete(item._id)}
