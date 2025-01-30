@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@/redux/store'
 
-interface CartItem {
+export interface CartItem {
   _id: number
+  id: string
   name: string
   price: number
   quantity: number
@@ -11,75 +12,67 @@ interface CartItem {
   totalPrice?: number
 }
 
-const initialState = {
-  items: [] as CartItem[],
+const loadCartFromLocalStorage = (): CartItem[] => {
+  const storedCart = localStorage.getItem('cart')
+  return storedCart ? JSON.parse(storedCart) : []
 }
 
-const saveCartToLocalStorage = (items: CartItem[]) => {
-  localStorage.setItem('cart', JSON.stringify(items))
+interface CartState {
+  cart: CartItem[]
 }
+
+const initialState: CartState = {
+  cart: loadCartFromLocalStorage(),
+}
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    // Add item to cart or update quantity
-    addToCart(state, action: PayloadAction<CartItem>) {
-      const existingItem = state.items.find(
+    addToCart: (state, action: PayloadAction<CartItem>) => {
+      const existingItem = state.cart.find(
         item => item._id === action.payload._id,
       )
-
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity
-        existingItem.totalPrice = existingItem.price * existingItem.quantity // Update price
+        existingItem.quantity += 1
       } else {
-        state.items.push({
-          ...action.payload,
-          totalPrice: action.payload.price * action.payload.quantity,
-        })
+        state.cart.push({ ...action.payload, quantity: 1 })
       }
-
-      saveCartToLocalStorage(state.items)
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
 
-    // Remove item from cart
-    removeFromCart(state, action: PayloadAction<number | string>) {
-      state.items = state.items.filter(item => item._id !== action.payload)
-      saveCartToLocalStorage(state.items)
-    },
-
-    // Increment/Decrement item quantity
-    updateQuantity(
-      state,
-      action: PayloadAction<{ id: number | string; quantity: number }>,
-    ) {
-      const existingItem = state.items.find(
-        item => item._id === action.payload.id,
-      )
-
-      if (existingItem) {
-        existingItem.quantity = Math.max(1, action.payload.quantity) // Prevent quantity < 1
-        existingItem.totalPrice = existingItem.price * existingItem.quantity // Update price
+    incrementItem: (state, action: PayloadAction<number>) => {
+      const item = state.cart.find(item => item._id === action.payload)
+      if (item) {
+        item.quantity += 1
       }
-
-      saveCartToLocalStorage(state.items)
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
 
-    // Clear the cart
-    clearCart(state) {
-      state.items = []
-      saveCartToLocalStorage(state.items)
+    decrementItem: (state, action: PayloadAction<number>) => {
+      const item = state.cart.find(item => item._id === action.payload)
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity -= 1
+        } else {
+          state.cart = state.cart.filter(item => item._id !== action.payload)
+        }
+      }
+      localStorage.setItem('cart', JSON.stringify(state.cart))
+    },
+
+    removeItem: (state, action: PayloadAction<number>) => {
+      state.cart = state.cart.filter(item => item._id !== action.payload)
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
   },
 })
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+export const { addToCart, incrementItem, decrementItem, removeItem } =
   cartSlice.actions
 
-export const selectCartItems = (state: RootState) => state.cart.items
+export const selectCartItems = (state: RootState) => state.cart.cart
 export const selectCartTotal = (state: RootState) =>
-  state.cart.items.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  )
+  state.cart.cart.reduce((total, item) => total + item.price * item.quantity, 0)
 
 export default cartSlice.reducer

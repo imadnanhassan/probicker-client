@@ -18,17 +18,7 @@ interface RatingProps {
   rating: number
   maxStars?: number
 }
-interface Product {
-  _id: string
-  name: string
-  description: string
-  price: number
-  imageUrl: string
-}
 
- interface CartProduct extends Product {
-   quantity: number
- }
 export const Rating: React.FC<RatingProps> = ({ rating, maxStars = 5 }) => {
   const renderStars = () => {
     return Array.from({ length: maxStars }, (_, index) => {
@@ -52,17 +42,6 @@ const ShopPage = () => {
 
   const dispatch = useAppDispatch()
   const cart = useAppSelector(selectCartItems)
-
- 
-
-  const handleAddToCart = product => {
-    dispatch(
-      addToCart({
-        ...product,
-        quantity: 1, 
-      }),
-    )
-  }
 
   console.log('Cart:', cart)
   if (isLoading) return <div>Loading...</div>
@@ -112,7 +91,7 @@ const ShopPage = () => {
                       </h6>
                     </div>
                     <div className="flex items-center gap-0.5">
-                      {renderStars(4)} {/* Example: Static 4-star rating */}
+                      {renderStars(4)}
                     </div>
                   </div>
                 </div>
@@ -126,7 +105,7 @@ const ShopPage = () => {
                     <Heart className="w-5 h-5 text-pink-500" />
                   </button>
                   <button
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() => dispatch(addToCart(product))}
                     type="button"
                     className="text-sm px-2 min-h-[36px] w-full bg-green-600 hover:bg-green-700 text-white tracking-wide ml-auto outline-none border-none rounded"
                   >
