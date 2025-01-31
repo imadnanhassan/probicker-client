@@ -1,17 +1,13 @@
-// import { StarIcon as Star } from '@heroicons/react/solid'
 import UiBrreadcrumbs from '@/components/common/UiBrreadcrumbs'
-import {
-  addToCart,
-  selectCartItems,
-} from '@/redux/features/cartSlice/cartSlice'
+import { addToCart } from '@/redux/features/cartSlice/cartSlice'
 
 import { useGettAllProductQuery } from '@/redux/features/product/product.api'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 
 import { ProductData } from '@/types'
 import { StarFilledIcon } from '@radix-ui/react-icons'
 import { Heart } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const breadcrumbsData = [{ label: 'Home' }, { label: 'Shop', isActive: true }]
 
@@ -49,38 +45,69 @@ export const Rating: React.FC<RatingProps> = ({ rating, maxStars = 5 }) => {
 const ShopPage = () => {
   const [filters, setFilters] = useState<FilterOption[]>([])
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({})
+  const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([])
 
   const { data: product = [], isLoading } = useGettAllProductQuery(undefined)
   console.log('Product Data:', product.data)
 
   const dispatch = useAppDispatch()
-  const cart = useAppSelector(selectCartItems)
 
+  const findFilteredProducts = useCallback(() => {
+    let filteredProducts = product?.data || []
+    for (const [category, selectedOptions] of Object.entries(selectedFilters)) {
+      if (selectedOptions.length > 0) {
+        filteredProducts = filteredProducts.filter((productD: ProductData) => {
+          switch (category) {
+            case 'Brand':
+              return selectedOptions.includes(productD.brand)
+            case 'Model':
+              return selectedOptions.includes(productD.model)
+            case 'Price Range':
+              return applyPriceFilter(productD.price, selectedOptions)
+            case 'In Stock':
+              return selectedOptions.includes(
+                productD.inStock ? 'In Stock' : 'Out of Stock',
+              )
+            default:
+              return true
+          }
+        })
+      }
+    }
+
+    return filteredProducts
+  }, [product?.data, selectedFilters])
+
+  const applyPriceFilter = (price: number, selectedOptions: string[]) => {
+    if (selectedOptions.includes('Below $100') && price < 100) return true
+    if (selectedOptions.includes('$100 - $500') && price >= 100 && price <= 500)
+      return true
+    if (
+      selectedOptions.includes('$500 - $1000') &&
+      price > 500 &&
+      price <= 1000
+    )
+      return true
+    if (selectedOptions.includes('Above $1000') && price > 1000) return true
+    return false
+  }
   useEffect(() => {
     if (!isLoading && product?.data.length > 0) {
       const extractedFilters: FilterOption[] = [
         {
           category: 'Brand',
-          options: [
-            ...new Set(
-              product?.data.map(
-                (productD: ProductData) => productD.brand as string,
-              ),
-            ),
-          ],
+          options: Array.from(new Set(
+            product?.data.map((productD: ProductData) => productD.brand as string),
+          )) as string[],
         },
         {
           category: 'Model',
-          options: [
-            ...new Set(
-              product?.data.map(
-                (productD: ProductData) => productD.model as string,
-              ),
-            ),
-          ],
-        },
-        {
-          category: 'Price Range',
+            options: Array.from(new Set(
+              product?.data.map((productD: ProductData) => productD.model as string),
+            )) as string[],
+          },
+          {
+            category: 'Price Range',
           options: ['Below $100', '$100 - $500', '$500 - $1000', 'Above $1000'],
         },
         {
@@ -89,8 +116,9 @@ const ShopPage = () => {
         },
       ]
       setFilters(extractedFilters)
+      setFilteredProducts(findFilteredProducts())
     }
-  }, [product, isLoading])
+  }, [product, isLoading, selectedFilters, findFilteredProducts])
 
   const toggleFilter = (category: string, option: string) => {
     setSelectedFilters((prevFilters: SelectedFilters) => {
@@ -109,7 +137,6 @@ const ShopPage = () => {
     })
   }
 
-  console.log('Cart:', cart)
   if (isLoading) return <div>Loading...</div>
 
   const renderStars = (rating: number) => {
@@ -158,68 +185,76 @@ const ShopPage = () => {
             </div>
           </div>
           {/* category products */}
+         
+
           <div className="lg:w-[75%]">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 py-20">
-              {product?.data?.map((product: ProductData) => (
-                <div
-                  key={product._id}
-                  className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-md transition-all"
-                >
-                  {/* Product Image */}
-                  <div className="w-full">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full object-cover object-top aspect-[230/307]"
-                    />
-                  </div>
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product: ProductData) => (
+                  <div
+                    key={product._id}
+                    className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-md transition-all"
+                  >
+                    {/* Product Image */}
+                    <div className="w-full">
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-full object-cover object-top aspect-[230/307]"
+                      />
+                    </div>
 
-                  {/* Product Details */}
-                  <div className="p-2 flex-1 flex flex-col">
-                    <div className="flex-1">
-                      {/* Name and Description */}
-                      <h5 className="text-sm sm:text-base font-bold text-gray-800 truncate">
-                        {product.name}
-                      </h5>
-                      <p className="mt-1 text-gray-500 truncate">
-                        {product.description}
-                      </p>
+                    {/* Product Details */}
+                    <div className="p-2 flex-1 flex flex-col">
+                      <div className="flex-1">
+                        {/* Name and Description */}
+                        <h5 className="text-sm sm:text-base font-bold text-gray-800 truncate">
+                          {product.name}
+                        </h5>
+                        <p className="mt-1 text-gray-500 truncate">
+                          {product.description}
+                        </p>
 
-                      {/* Price and Ratings */}
-                      <div className="flex flex-wrap justify-between gap-2 mt-2">
-                        <div className="flex gap-2">
-                          <h6 className="text-sm sm:text-base font-bold text-gray-800">
-                            ${product.price}
-                          </h6>
-                          <h6 className="text-sm sm:text-base text-gray-500">
-                            <s>${(product.price * 1.2).toFixed(2)}</s>
-                          </h6>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          {renderStars(4)}
+                        {/* Price and Ratings */}
+                        <div className="flex flex-wrap justify-between gap-2 mt-2">
+                          <div className="flex gap-2">
+                            <h6 className="text-sm sm:text-base font-bold text-gray-800">
+                              ${product.price}
+                            </h6>
+                            <h6 className="text-sm sm:text-base text-gray-500">
+                              <s>${(product.price * 1.2).toFixed(2)}</s>
+                            </h6>
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            {renderStars(4)}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Wishlist and Add to Cart */}
-                    <div className="flex items-center gap-2 mt-4">
-                      <button
-                        className="bg-pink-100 hover:bg-pink-200 w-12 h-9 flex items-center justify-center rounded cursor-pointer"
-                        title="Wishlist"
-                      >
-                        <Heart className="w-5 h-5 text-pink-500" />
-                      </button>
-                      <button
-                        onClick={() => dispatch(addToCart(product))}
-                        type="button"
-                        className="text-sm px-2 min-h-[36px] w-full bg-green-600 hover:bg-green-700 text-white tracking-wide ml-auto outline-none border-none rounded"
-                      >
-                        Add to cart
-                      </button>
+                      {/* Wishlist and Add to Cart */}
+                      <div className="flex items-center gap-2 mt-4">
+                        <button
+                          className="bg-pink-100 hover:bg-pink-200 w-12 h-9 flex items-center justify-center rounded cursor-pointer"
+                          title="Wishlist"
+                        >
+                          <Heart className="w-5 h-5 text-pink-500" />
+                        </button>
+                        <button
+                          onClick={() => dispatch(addToCart(product))}
+                          type="button"
+                          className="text-sm px-2 min-h-[36px] w-full bg-green-600 hover:bg-green-700 text-white tracking-wide ml-auto outline-none border-none rounded"
+                        >
+                          Add to cart
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-center text-gray-500 col-span-full">
+                  No products found for the selected filters.
+                </p>
+              )}
             </div>
           </div>
         </section>

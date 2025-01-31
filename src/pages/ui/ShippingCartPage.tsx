@@ -32,7 +32,7 @@ const ShippingCartPage = () => {
   return (
     <div>
       <UiBrreadcrumbs breadcrumbs={breadcrumbsData} />
-      <div className="font-sans max-w-screen-2xl mx-auto md:px-8  bg-white py-4">
+      <div className="font-sans max-w-screen-xl mx-auto md:px-8  bg-white py-4">
         <h1 className="text-3xl font-bold text-gray-800 text-center">
           Shopping Cart
         </h1>

@@ -1,5 +1,6 @@
 export type ProductData = {
-  _id?: string
+  _id?: number | string | undefined
+  id: number | string | undefined
   name: string
   model: string
   brand: string

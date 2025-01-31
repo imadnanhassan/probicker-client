@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@/redux/store'
 
 export interface CartItem {
-  _id: number
+  _id: number 
   id: string
   name: string
   price: number
