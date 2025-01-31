@@ -6,6 +6,7 @@ import {
   selectCartItems,
 } from '@/redux/features/cartSlice/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { Link } from 'react-router-dom'
 
 const breadcrumbsData = [
   { label: 'Home' },
@@ -178,13 +179,13 @@ const ShippingCartPage = () => {
                 type="button"
                 className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md"
               >
-                Checkout
+               <Link to="/checkout">Proceed to Checkout</Link>
               </button>
               <button
                 type="button"
                 className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-md"
               >
-                Continue Shopping
+               <Link to="/shop">Continue Shopping</Link>
               </button>
             </div>
           </div>

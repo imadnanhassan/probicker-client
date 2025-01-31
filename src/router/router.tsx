@@ -11,6 +11,7 @@ import { adminPaths } from './admin.routes'
 import { customerPaths } from './customer.router'
 import ShopPage from '@/pages/ui/ShopPage'
 import ShippingCartPage from '@/pages/ui/ShippingCartPage'
+import CheckoutPage from '@/pages/ui/CheckoutPage'
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/shop', element: <ShopPage /> },
       { path: '/cart', element: <ShippingCartPage /> },
+      { path: '/checkout', element: <CheckoutPage /> },
     ],
   },
 
