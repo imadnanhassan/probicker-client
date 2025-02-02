@@ -6,45 +6,51 @@ import { useLoginMutation } from '@/redux/features/auth/authApi'
 import { setUser } from '@/redux/features/auth/authSlice'
 import { verifyToken } from '@/utils/verifyToken'
 import { toast } from 'sonner'
-import { JwtPayload } from 'jwt-decode'
 
+interface FormData {
+  email: string
+  password: string
+}
 const LoginPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm<FormData>()
   const [login, { isLoading }] = useLoginMutation()
 
-  interface FormData {
-    email: string
-    password: string
-  }
 
-  interface User extends JwtPayload {
-    role?: string
-  }
-
-  interface LoginResponse {
-    data: {
-      accessToken: string
-    }
-  }
 
   const onSubmit = async (data: FormData) => {
-    console.log('data', data)
     const toastId = toast.loading('Logging in')
     try {
       const userInfo = {
         email: data.email,
         password: data.password,
+        rememberMe: true,
       }
 
-      const res: LoginResponse = await login(userInfo).unwrap()
-      const user: User = verifyToken(res.data.accessToken)
-      dispatch(setUser({ user: user, token: res.data.accessToken }))
+      const res = await login(userInfo).unwrap()
+      console.log(res)
+
+      const token = res?.data?.token
+      console.log(token)
+      if (!token || typeof token !== 'string') {
+        toast.error('Invalid token received')
+        return
+      }
+      localStorage.setItem('token', token)
+
+      const user = verifyToken(token)
+      if (!user) {
+        toast.error('Failed to decode token')
+        return
+      }
+
+      dispatch(setUser({ user: user, token: token }))
       toast.success('Logged in', { id: toastId, duration: 2000 })
+
       if (user?.role === 'admin') {
         navigate('/admin/dashboard')
-      } else if (user?.role === 'customer') {
+      } else if (user?.role === 'user') {
         navigate('/customer/dashboard')
       } else {
         navigate('/sign-in')

@@ -4,7 +4,7 @@ import { RootState } from '../../store'
 export type TUser = {
   id: string
   name: string
-  role: 'admin' | 'customer'
+  role: 'admin' | 'user'
   iat: number
   exp: number
 }
@@ -25,6 +25,7 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       const { user, token } = action.payload
+      console.log(action.payload)
       state.user = user
       state.token = token
       console.log('user', action)
@@ -32,6 +33,7 @@ const authSlice = createSlice({
     logout: state => {
       state.user = null
       state.token = null
+      localStorage.removeItem('token')
     },
   },
 })
