@@ -11,6 +11,7 @@ interface OrderData {
 
 export const useAddOrder = () => {
   const token = useAppSelector((state: RootState) => state.auth.token)
+  console.log(token)
   const [addOrder, result] = useAddOrderMutation()
   const addOrderWithToken = (orderData: OrderData) =>
     addOrder({ orderData, token })
@@ -31,7 +32,7 @@ const ordersApi = baseApi.injectEndpoints({
         url: '/orders/add',
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(orderData),
@@ -52,25 +53,6 @@ const ordersApi = baseApi.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ['Order'],
-      transformResponse: (
-        response,
-        meta: { response?: { status?: number } },
-      ) => {
-        const status = meta?.response?.status
-        if (status && status >= 200 && status < 300) {
-          return response
-        } else {
-          const errorData: { message: string; status?: number } = {
-            message: 'Failed to update order',
-            ...response,
-          }
-
-          if (status) {
-            errorData.status = status
-          }
-          throw { status, data: errorData }
-        }
-      },
     }),
     deleteOrder: builder.mutation({
       query: id => ({

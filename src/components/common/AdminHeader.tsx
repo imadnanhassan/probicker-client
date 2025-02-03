@@ -15,15 +15,19 @@ import ProfileDropdown from '../admin/ProfileDropdown'
 import { useSelector } from 'react-redux'
 
 interface AdminHeaderProps {
-  handleToggle: () => void;
-  isMobileMenuOpen: boolean;
+  handleToggle: () => void
+  isMobileMenuOpen: boolean
 }
 
-const AdminHeader: React.FC<AdminHeaderProps> = ({ handleToggle, isMobileMenuOpen }) => {
+const AdminHeader: React.FC<AdminHeaderProps> = ({
+  handleToggle,
+  isMobileMenuOpen,
+}) => {
   const admin = useSelector((state: any) => state?.auth?.user)
   console.log(admin)
 
-  //   const { isDarkMode, toggleDarkMode } = useDarkMode()
+  const { name, email } = admin
+
   return (
     <header className=" sticky top-0 z-50 shadow-sm py-3 bg-white text-lightText dark:bg-darkBg dark:text-darkText">
       <div className="flex items-center justify-between px-10">
@@ -60,10 +64,14 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ handleToggle, isMobileMenuOpe
               {isDarkMode ? <SunIcon /> : <MoonIcon />}
             </button> */}
           </div>
+
           <ProfileDropdown
-            username="Alex Robert"
-            email="alex24y@example.com"
-            profileImage="https://ecme-react.themenate.net/img/avatars/thumb-1.jpg"
+            username={name || 'Adnan Hassan'}
+            email={email || 'Not Available'}
+            profileImage={
+              admin?.profileImage ||
+              'https://ecme-react.themenate.net/img/avatars/thumb-1.jpg'
+            }
           />
         </div>
 

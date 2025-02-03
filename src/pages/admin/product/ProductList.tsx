@@ -49,7 +49,7 @@ const ProductList = () => {
         <div className="items-start justify-end md:flex">
           <div className="mt-3 md:mt-0">
             <Link
-              to={'/'}
+              to={'/admin/product-create'}
               className="inline-block px-4 py-2 text-white duration-150 font-medium bg-green-600 rounded-lg hover:bg-green-500 active:bg-green-700 md:text-sm"
             >
               Add product

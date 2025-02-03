@@ -1,7 +1,6 @@
 import { selectCartItems } from '@/redux/features/cartSlice/cartSlice'
 import { useAddOrderMutation } from '@/redux/features/order/orderSlice'
 import { useAppSelector } from '@/redux/hooks'
-
 import { useForm } from 'react-hook-form'
 
 interface FormData {
@@ -11,13 +10,11 @@ interface FormData {
 }
 const CheckoutPage = () => {
   const { register, handleSubmit } = useForm<FormData>()
-  const authState = useAppSelector(state => state.auth)
   const cartItems = useAppSelector(selectCartItems)
   const [addOrder, { isLoading, isError, isSuccess }] =
     useAddOrderMutation(undefined)
 
   const onSubmit = async (data: FormData) => {
-    console.log('Before placing order, authState:', authState)
     const orderData = {
       customerName: data.name,
       postalCode: data.postalCode,
@@ -33,15 +30,11 @@ const CheckoutPage = () => {
     }
 
     try {
-      console.log('Before placing order:', authState)
       const response = await addOrder(orderData).unwrap()
       console.log('Order placed successfully', response)
-      alert('Order placed successfully!')
     } catch (error) {
       console.error('Order failed', error)
-      alert('Order submission failed!')
     }
-     console.log('After placing order, authState:', authState)
   }
 
   return (
