@@ -12,11 +12,10 @@ export const AdminMenu = () => {
   let user: TUser | undefined
 
   if (token) {
-    user = verifyToken(token) as TUser
+    user = verifyToken(token) as unknown as TUser
   }
 
-  const role: 'admin' | 'customer' =
-    user?.role === 'admin' ? 'admin' : 'customer'
+  const role: 'admin' | 'user' = user?.role === 'admin' ? 'admin' : 'user'
 
   // Logout handler
   const handleLogout = () => {
@@ -93,7 +92,7 @@ export const AdminMenu = () => {
         </li>
       )}
 
-      {role === 'customer' && (
+      {role === 'user' && (
         <li>
           <Link
             to="/customer/dashboard"

@@ -17,8 +17,6 @@ const LoginPage = () => {
   const { register, handleSubmit } = useForm<FormData>()
   const [login, { isLoading }] = useLoginMutation()
 
-
-
   const onSubmit = async (data: FormData) => {
     const toastId = toast.loading('Logging in')
     try {
@@ -29,15 +27,8 @@ const LoginPage = () => {
       }
 
       const res = await login(userInfo).unwrap()
-      console.log(res)
 
-      const token = res?.data?.token
-      console.log(token)
-      if (!token || typeof token !== 'string') {
-        toast.error('Invalid token received')
-        return
-      }
-      localStorage.setItem('token', token)
+      const token = res?.token
 
       const user = verifyToken(token)
       if (!user) {

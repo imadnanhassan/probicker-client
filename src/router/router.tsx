@@ -37,7 +37,7 @@ const router = createBrowserRouter([
   {
     path: '/customer',
     element: (
-      <PrivateRoute role="customer">
+      <PrivateRoute role="user">
         <AdminLayout />
       </PrivateRoute>
     ),

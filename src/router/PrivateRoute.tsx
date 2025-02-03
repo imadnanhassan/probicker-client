@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
 interface PrivateRouteProps {
-  role: 'admin' | 'customer'
+  role: 'admin' | 'user'
   children: React.ReactNode
 }
 
