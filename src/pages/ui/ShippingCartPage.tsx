@@ -1,11 +1,9 @@
 import UiBrreadcrumbs from '@/components/common/UiBrreadcrumbs'
 import {
-  decrementItem,
-  incrementItem,
-  removeItem,
+ 
   selectCartItems,
 } from '@/redux/features/cartSlice/cartSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import {  useAppSelector } from '@/redux/hooks'
 import { Link } from 'react-router-dom'
 
 const breadcrumbsData = [
@@ -14,19 +12,19 @@ const breadcrumbsData = [
 ]
 const ShippingCartPage = () => {
   const cartItems = useAppSelector(selectCartItems)
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
-  const handleIncrement = (id: number) => {
-    dispatch(incrementItem(id))
-  }
+  // const handleIncrement = (id: number) => {
+  //   dispatch(incrementItem(id))
+  // }
 
-  const handleDecrement = (id: number) => {
-    dispatch(decrementItem(id))
-  }
+  // const handleDecrement = (id: number) => {
+  //   dispatch(decrementItem(id))
+  // }
 
-  const handleRemove = (id: number) => {
-    dispatch(removeItem(id))
-  }
+  // const handleRemove = (id: number) => {
+  //   dispatch(removeItem(id))
+  // }
 
   console.log('Cart:', cartItems)
 
@@ -71,7 +69,7 @@ const ShippingCartPage = () => {
                           Size: {item.model}
                         </p>
                         <button
-                          onClick={() => handleRemove(item._id)}
+                          // onClick={() => handleRemove(item._id)}
                           type="button"
                           className="mt-6 font-semibold text-red-500 text-xs flex items-center gap-1 shrink-0"
                         >
@@ -100,7 +98,7 @@ const ShippingCartPage = () => {
                         <span className="mt-6 flex items-center px-3 py-1.5 border border-gray-300 text-gray-800 text-xs outline-none bg-transparent rounded-md">
                           <button
                             type="button"
-                            onClick={() => handleDecrement(item._id)}
+                            // onClick={() => handleDecrement(item._id)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -114,13 +112,13 @@ const ShippingCartPage = () => {
                             </svg>
                           </button>
                           <span className="mx-3 font-bold">
-                            {cartItems.find(
+                            {/* {cartItems.find(
                               cartItem => cartItem._id === item._id,
-                            )?.quantity ?? 0}
+                            )?.quantity ?? 0} */}
                           </span>
                           <button
                             type="button"
-                            onClick={() => handleIncrement(item._id)}
+                            // onClick={() => handleIncrement(item._id)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

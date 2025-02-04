@@ -20,7 +20,7 @@ const CheckoutPage = () => {
       postalCode: data.postalCode,
       paymentMethod: data.paymentMethod,
       cartItems: cartItems.map(item => ({
-        productId: item.id,
+        product: item.product,
         quantity: item.quantity,
         price: item.price,
       })),

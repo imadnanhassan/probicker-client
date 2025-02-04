@@ -25,6 +25,8 @@ interface FilterOption {
   options: string[]
 }
 
+
+
 export const Rating: React.FC<RatingProps> = ({ rating, maxStars = 5 }) => {
   const renderStars = () => {
     return Array.from({ length: maxStars }, (_, index) => {
@@ -46,11 +48,10 @@ const ShopPage = () => {
   const [filters, setFilters] = useState<FilterOption[]>([])
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({})
   const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([])
-
+  const dispatch = useAppDispatch()
   const { data: product = [], isLoading } = useGettAllProductQuery(undefined)
   console.log('Product Data:', product.data)
 
-  const dispatch = useAppDispatch()
 
   const findFilteredProducts = useCallback(() => {
     let filteredProducts = product?.data || []
@@ -96,18 +97,26 @@ const ShopPage = () => {
       const extractedFilters: FilterOption[] = [
         {
           category: 'Brand',
-          options: Array.from(new Set(
-            product?.data.map((productD: ProductData) => productD.brand as string),
-          )) as string[],
+          options: Array.from(
+            new Set(
+              product?.data.map(
+                (productD: ProductData) => productD.brand as string,
+              ),
+            ),
+          ) as string[],
         },
         {
           category: 'Model',
-            options: Array.from(new Set(
-              product?.data.map((productD: ProductData) => productD.model as string),
-            )) as string[],
-          },
-          {
-            category: 'Price Range',
+          options: Array.from(
+            new Set(
+              product?.data.map(
+                (productD: ProductData) => productD.model as string,
+              ),
+            ),
+          ) as string[],
+        },
+        {
+          category: 'Price Range',
           options: ['Below $100', '$100 - $500', '$500 - $1000', 'Above $1000'],
         },
         {
@@ -136,6 +145,22 @@ const ShopPage = () => {
       }
     })
   }
+
+   const handleAddToCart = (product: ProductData) => {
+    dispatch(
+      addToCart({
+        product: product.id as string,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        inStock: product.inStock,
+        model: product.model,
+        brand: product.brand,
+        description: product.description,
+        imageUrl: product.imageUrl,
+      }),
+    )
+   }
 
   if (isLoading) return <div>Loading...</div>
 
@@ -184,8 +209,6 @@ const ShopPage = () => {
               ))}
             </div>
           </div>
-          {/* category products */}
-         
 
           <div className="lg:w-[75%]">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 py-20">
@@ -240,7 +263,7 @@ const ShopPage = () => {
                           <Heart className="w-5 h-5 text-pink-500" />
                         </button>
                         <button
-                          onClick={() => dispatch(addToCart(product))}
+                          onClick={() => handleAddToCart(product)}
                           type="button"
                           className="text-sm px-2 min-h-[36px] w-full bg-green-600 hover:bg-green-700 text-white tracking-wide ml-auto outline-none border-none rounded"
                         >

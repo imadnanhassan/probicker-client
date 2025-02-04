@@ -37,6 +37,7 @@ const MainHeader = () => {
   }, [state])
 
   const cartItems = useAppSelector(selectCartItems)
+  console.log(cartItems, 'addToCartItems')
   return (
     <nav ref={navRef} className="w-full bg-white top-0 z-20 py-3 font-regular">
       <div className="items-center px-4 max-w-screen-2xl mx-auto md:px-8 lg:flex">
